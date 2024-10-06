@@ -1,0 +1,31 @@
+
+<div *ngIf="user">
+    <h1 class="tittle">Bienvenido, <b>{{user.nombre}}</b></h1>
+    
+</div>
+<div class="header">
+    <a (click)="logout()" class="cerrar-sesion">
+        <h3>Cerrar Sesion</h3>
+    </a>
+
+</div>
+
+<div class="login-container">
+    <div class="login-info-container">
+        <form class="inputs-container">
+            <h1>Generar Préstamo</h1>
+            <img class="image-left" src="https://cdn-icons-png.flaticon.com/512/6475/6475938.png" alt="login">  
+            <p>Accede a la pestaña para generar un préstamo!</p>
+            <button class="btn"><a routerLink="/generate-loan">Click aquí</a></button>
+        </form>
+        
+    </div>
+    <div class="login-info-container">
+        <form class="inputs-container">
+            <h1>Historial de Préstamos</h1>
+            <img class="image-container" src="https://cdn2.iconfinder.com/data/icons/arrows-48/100/Arrow_time-512.png" alt="login">
+            <p>Accede a tu historial de préstamos realizados</p>
+            <button class="btn"><a style="text-decoration: none;"  routerLink="/loan-history">Click aquí</a></button>
+        </form>
+    </div> 
+</div>

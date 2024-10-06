@@ -1,0 +1,67 @@
+
+
+<div class="login-container">
+    
+<div class="login-info-container">
+<h1 class="title">Generar Prestamo</h1>
+<form class="inputs-container" [formGroup]="prestamoForm" (ngSubmit)="crearPrestamo()">
+    <!-- DNI -->
+    <a routerLink="/dashboard"><img class="image-left" src="https://cdn-icons-png.flaticon.com/512/6475/6475938.png" alt="login"> </a>
+    <div>
+      <input class="input" formControlName="dni" id="dni" type="text" placeholder="DNI" />
+      <div *ngIf="prestamoForm.get('dni')?.invalid && prestamoForm.get('dni')?.touched" class="error-message">
+        <span *ngIf="prestamoForm.get('dni')?.errors?.['required']">DNI es requerido.</span>
+        <span *ngIf="prestamoForm.get('dni')?.errors?.['pattern']">DNI debe tener 8 dígitos.</span>
+      </div>
+    </div>
+  
+    <!-- Mensaje de error si no se encuentra la persona por DNI -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Nombres -->
+    <div>
+    
+      <input class="input" formControlName="nombres" id="nombres" type="text" [disabled]="true" />
+    </div>
+  
+    <!-- Apellido Paterno -->
+    <div>
+     
+      <input class="input" formControlName="apellidoPaterno" id="apellidoPaterno" type="text" [disabled]="true" />
+    </div>
+  
+    <!-- Apellido Materno -->
+    <div>
+     
+      <input class="input" formControlName="apellidoMaterno" id="apellidoMaterno" type="text" [disabled]="true" />
+    </div>
+    <!-- Monto -->
+    <div>
+     
+      <input class="input" formControlName="monto" id="monto" type="number" placeholder="MONTO" />
+      <div *ngIf="prestamoForm.get('monto')?.invalid && prestamoForm.get('monto')?.touched" class="error-message">
+        <span *ngIf="prestamoForm.get('monto')?.errors?.['required']">Monto es requerido.</span>
+        <span *ngIf="prestamoForm.get('monto')?.errors?.['min']">El monto debe ser mayor a 200.</span>
+      </div>
+    </div>
+  
+    <!-- Plazo -->
+    <div>
+      
+      <input class="input" formControlName="plazo" id="plazo" type="number"    placeholder="PLAZO"/>
+      <div *ngIf="prestamoForm.get('plazo')?.invalid && prestamoForm.get('plazo')?.touched" class="error-message">
+        <span *ngIf="prestamoForm.get('plazo')?.errors?.['required']">Plazo es requerido.</span>
+        <span *ngIf="prestamoForm.get('plazo')?.errors?.['min']">El plazo debe ser mayor a 0.</span>
+        <span *ngIf="prestamoForm.get('plazo')?.errors?.['max']">El plazo debe ser menor a 6.</span>
+      </div>
+    </div>
+  
+    <!-- Botón de enviar -->
+    <button class="btn" type="submit" [disabled]="prestamoForm.invalid">Crear Préstamo</button>
+  </form>
+
+</div>
+
+</div>

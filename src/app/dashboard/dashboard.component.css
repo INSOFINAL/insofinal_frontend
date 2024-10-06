@@ -1,0 +1,169 @@
+h1 {
+    color: #E1E506;
+}
+.header {
+    display: flex;
+    justify-content: flex-end; /* Alinea a la derecha */
+    padding: 1rem; /* Espaciado alrededor */
+}
+
+.cerrar-sesion {
+    color: #E1E506;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+
+.image-container {
+    width: 100%; /* Cambiado a 100% para un mejor ajuste */
+    height: auto; /* Cambiado a auto para mantener proporciones */
+    padding-top: 2rem;
+    margin: 0 auto; /* Centrar la imagen */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center; /* Centra el contenido */
+    flex-wrap: wrap; /* Permite que los elementos se muevan en líneas */
+    gap: 20px; /* Espacio entre opciones */
+    padding: 2rem;
+}
+
+.login-info-container {
+    /* Fondo para las opciones */
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    flex: 1 1 200px; /* Tamaño base de 200px, crece y se encoge */
+    min-width: 200px; /* Ancho mínimo para las opciones */
+}
+
+.tittle {
+    padding-left: 10%; /* Cambiado a porcentaje para mejor responsividad */
+    padding-top: 100px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #E1E506;
+}
+
+.inputs-container {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.input, .btn {
+    width: 90%; /* Mantener ancho relativo */
+    height: 3.125rem;
+    font-size: 1em;
+}
+
+.input {
+    padding-left: 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    background-color: #31312e;
+    color: white;
+    box-sizing: border-box;
+    border: 2px solid white;
+}
+
+.input:hover {
+    border: 2px solid black;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.btn {
+    width: 50%; /* Mantener ancho relativo */
+    letter-spacing: 1px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background-color: #e1e506a2;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.image-left {
+    width: 100%; /* Cambiado a 100% para que se ajuste a su contenedor */
+    height: auto; /* Cambiado a auto para mantener proporciones */
+    max-width: 200px; /* Añadir un max-width para pantallas grandes */
+}
+
+.inputs-container > p {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 22px;
+    font-style: italic;
+    text-align: center;
+}
+
+.image-container {
+    margin-top: -35px; /* Puede ajustarse según necesidad */
+    width: 100%; /* Cambiado a 100% para mejor ajuste */
+    height: auto;
+    max-width: 200px; /* Cambiado a auto para mantener proporciones */
+}
+
+.span {
+    color: #5a42d1;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Media Queries para Responsividad */
+@media (min-width: 768px) {
+    .login-container {
+        flex-direction: row; /* Cambiar a fila en pantallas más grandes */
+    }
+
+    .login-info-container {
+        width: 50%; /* Retornar a 50% en pantallas más grandes */
+    }
+
+    .tittle {
+        padding-left: 10%; /* Mantener el padding proporcional */
+    }
+
+    .image-left {
+        margin-right: 2rem; /* Añadir margen derecho en pantallas grandes */
+    }
+}
+
+@media (max-width: 600px) {
+    .tittle {
+        font-size: 1.8rem; /* Ajustar tamaño de fuente en pantallas pequeñas */
+    }
+
+    .btn {
+        width: 90%; /* Aumentar ancho del botón para pantallas pequeñas */
+    }
+
+    .inputs-container > p {
+        font-size: 18px; /* Reducir tamaño de fuente para pantallas pequeñas */
+    }
+}
+
+@media (max-width: 600px) {
+    .cerrar-sesion {
+        font-size: 0.9rem; /* Ajustar el tamaño en pantallas pequeñas */
+    }
+
+    .tittle {
+        font-size: 1.5rem; /* Ajustar el tamaño en pantallas pequeñas */
+    }
+
+    .btn {
+        width: 90%; /* Botón más ancho en pantallas pequeñas */
+    }
+}

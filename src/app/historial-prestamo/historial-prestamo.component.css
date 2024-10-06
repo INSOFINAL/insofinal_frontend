@@ -1,0 +1,217 @@
+.prestamo-cuadro {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  width: calc(100% - 40px); /* Ajusta el ancho para que tenga un margen */
+  max-width: 700px; /* Mantiene un ancho máximo */
+  box-sizing: border-box; /* Incluye el padding y el border en el tamaño total */
+}
+
+.image-left {
+  width: 80px;
+  height: 80px;
+}
+
+.prestamo-cuadro h4 {
+  margin-bottom: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.deuda {
+  color: red;
+  font-weight: bold;
+}
+
+.pagado {
+  background-color: green;
+  color: black;
+}
+
+.pendiente {
+  background-color: orange;
+  color: black;
+}
+
+.login-container {
+  height: auto;
+  width: 90%; /* Ajuste al 90% para pantallas más pequeñas */
+  max-width: 1000px; /* Mantiene un ancho máximo */
+  margin: 1em auto;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dni {
+  padding-bottom: 100px;
+  width: 100%; /* Hace que el input ocupe el 100% */
+  max-width: 300px; /* Limita el ancho máximo */
+  height: 3.125rem;
+  font-size: 1em;
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background-color: #31312e;
+  color: white;
+  box-sizing: border-box;
+  border: 2px solid white;
+}
+
+.login-info-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.5rem;
+  background-color: #e1e506a2;
+}
+
+.tittle {
+  padding-top: 30px;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #E1E506;
+}
+
+.inputs-container {
+  height: 55%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input, .btn {
+  width: 100%; /* Hace que los botones y los inputs ocupen el 100% */
+  max-width: 300px; /* Limita el ancho máximo */
+  height: 3.125rem;
+  font-size: 1em;
+}
+
+.input {
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background-color: #31312e;
+  color: white;
+  box-sizing: border-box;
+  border: 2px solid white;
+}
+
+.input:hover {
+  border: 2px solid black;
+}
+
+.btn {
+  width: 100%; /* Hace que el botón ocupe el 100% */
+  letter-spacing: 1px;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  background-color: red;
+  font-size: 1.2rem;
+  font-weight: 100;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #b8b6b6;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.client-info, .loan-details {
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+strong {
+  color: #333;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.schedule-table th, .schedule-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.schedule-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.schedule-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.schedule-table .paid {
+  color: green;
+  font-weight: bold;
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .login-container {
+      flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+      align-items: center; /* Centra los elementos */
+  }
+
+  .dni, .input, .btn {
+      width: 90%; /* Ajusta el ancho a 90% */
+      max-width: none; /* Remueve el ancho máximo */
+  }
+
+  .prestamo-cuadro {
+      width: 90%; /* Ajusta el ancho de los cuadros de préstamo */
+  }
+}

@@ -1,0 +1,138 @@
+.image-container{
+  width: 500px;
+  height: 500px;
+  padding-top: 2rem;
+  margin-right: 2rem;
+}
+
+.error-message{
+  color: white;
+}
+
+.login-container{
+  height: 43.75em;
+  width: 60em;
+  margin: 6em auto;
+  display: flex;
+  justify-content: center;
+  
+  border-radius: 10px;
+  overflow: hidden;
+  padding-top: 120px;
+}
+
+.login-info-container{
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.5rem;
+  background-color: #31312e;
+}
+
+.tittle{
+  text-transform: capitalize;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #E1E506;
+}
+
+.inputs-container {
+  height: 55%;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input, .btn {
+  width: 90%;
+  height: 3.125rem;
+  font-size: 1em;
+}
+
+.input {
+  padding-left: 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background-color: #31312e;
+  color: white;
+  box-sizing: border-box;
+  border: 2px solid white;
+}
+
+.input:hover {
+  border: 2px solid black;
+}
+
+.btn {
+  width: 80%;
+  letter-spacing: 1px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  background-color: #e1e506a2;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.inputs-container > p {
+  font-weight: 600;
+  color: #E1E506;
+  margin-right: 250px;
+  
+}
+
+.image-container{
+  width: 450px;
+  height: 450px;
+}
+
+.span {
+  color: #5a42d1;
+  font-weight: 600;
+  cursor: pointer;
+}
+  
+  @media screen and (max-width: 1000px) {
+    .image-container {
+        display: none;
+    }
+  
+    .login-container {
+        width: 70%;
+        
+        margin-top: 3rem;
+    }
+  
+    .login-info-container {
+        width: 100%;
+    }
+  }
+  
+  @media screen and (max-width: 650px) {
+    .login-container {
+        width: 90%;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    .login-container {
+        height: 90%;
+    }
+  
+    .social-login {
+        flex-direction: column;
+        align-items: center;
+        height: 30%;
+    }
+  
+    .login-info-container > p {
+        margin: 0;
+    }
+  }
