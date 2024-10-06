@@ -20,6 +20,8 @@ export class HistorialPrestamoComponent {
   ngOnInit(): void {
       
   }
+
+
   marcarComoPagado(pagoId: number) {
     console.log('Pago ID:', pagoId);
     this.prestamoService.marcarPagoComoPagado(pagoId).subscribe(response => {
@@ -28,6 +30,11 @@ export class HistorialPrestamoComponent {
     }, error => {
       console.error('Error al marcar pago como pagado', error);
     });
+  }
+
+  todosPagosPendientes(prestamo: any): boolean {
+    // Revisa si todos los pagos están en estado 'Pendiente' o 'Deuda'
+    return prestamo.cronogramaPagos.every((pago: any) => pago.estado !== 'Pagado');
   }
 
   cancelarPrestamo(id: number) {

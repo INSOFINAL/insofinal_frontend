@@ -27,7 +27,7 @@ export class GenerarPrestamoComponent {
   ngOnInit(): void {
     this.prestamoForm = this.fb.group({
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      monto: ['', [Validators.required, Validators.min(300)]],
+      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000)]],
       plazo: ['', [Validators.required, Validators.min(1), Validators.max(6)]],
       nombres: [{ value: '', disabled: true }],
       apellidoPaterno: [{ value: '', disabled: true }],

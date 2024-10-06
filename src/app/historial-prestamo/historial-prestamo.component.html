@@ -23,7 +23,12 @@
         <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        <button (click)="cancelarPrestamo(prestamo.id)" class="btn btn-danger">Cancelar Préstamo</button>
+        <button 
+  *ngIf="todosPagosPendientes(prestamo)" 
+  (click)="cancelarPrestamo(prestamo.id)" 
+  class="btn btn-danger">
+  Cancelar Préstamo
+</button>
         <h4>Cronograma de Pagos</h4>
         <table class="table table-bordered">
           <thead>
