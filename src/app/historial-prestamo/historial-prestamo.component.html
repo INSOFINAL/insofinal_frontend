@@ -40,14 +40,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let pago of prestamo.cronogramaPagos">
+            <tr *ngFor="let pago of prestamo.cronogramaPagos; let i = index">
               <td>{{ pago.fechaPago | date:'dd/MM/yyyy' }}</td>
               <td>{{ pago.montoCuota | currency:'PEN':'symbol':'1.2-2' }}</td>
               <td [ngClass]="{'deuda': pago.estado === 'Deuda', 'pagado': pago.estado === 'Pagado', 'pendiente': pago.estado === 'Pendiente'}">
                 {{ pago.estado }}
               </td>
               <td>
-                <button (click)="marcarComoPagado(pago.id)" *ngIf="pago.estado === 'Pendiente'">Marcar como Pagado</button>
+                <!-- Mostrar el botón solo para la primera cuota pendiente -->
+                <button (click)="marcarComoPagado(pago.id)" 
+                        *ngIf="pago.estado === 'Pendiente' && esPrimerPagoPendiente(prestamo.cronogramaPagos, i)">
+                  Marcar como Pagado
+                </button>
               </td>
             </tr>
           </tbody>

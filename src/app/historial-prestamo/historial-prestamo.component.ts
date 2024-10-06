@@ -37,6 +37,18 @@ export class HistorialPrestamoComponent {
     return prestamo.cronogramaPagos.every((pago: any) => pago.estado !== 'Pagado');
   }
 
+  esPrimerPagoPendiente(cronogramaPagos: any[], index: number): boolean {
+    // Recorre los pagos desde el principio hasta el índice actual
+    for (let i = 0; i < index; i++) {
+      if (cronogramaPagos[i].estado === 'Pendiente') {
+        // Si hay un pago pendiente antes del actual, este no es el primero pendiente
+        return false;
+      }
+    }
+    // Si no se encontró ningún otro pago pendiente antes del actual, este es el primero
+    return true;
+  }
+
   cancelarPrestamo(id: number) {
     if (confirm('¿Estás seguro de que deseas cancelar este préstamo?')) {
       this.prestamoService.eliminarPrestamo(id).subscribe(() => {

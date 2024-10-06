@@ -3,8 +3,6 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { ServiceService } from '../authenticacion/service/service.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { error } from 'console';
-
 
 @Component({
   selector: 'app-generar-prestamo',
