@@ -39,19 +39,21 @@
     </div>
     <!-- Monto -->
     <div>
-     
-      <input class="input" formControlName="monto" id="monto" type="number" placeholder="MONTO" />
+      <input class="input" formControlName="monto" id="monto" type="number" placeholder="MONTO" step="1" />
       <div *ngIf="prestamoForm.get('monto')?.invalid && prestamoForm.get('monto')?.touched" class="error-message">
         <span *ngIf="prestamoForm.get('monto')?.errors?.['required']">Monto es requerido.</span>
         <span *ngIf="prestamoForm.get('monto')?.errors?.['min']">El monto debe ser mayor a 300.</span>
         <span *ngIf="prestamoForm.get('monto')?.errors?.['max']">El monto debe ser menor a 3000.</span>
+        <span *ngIf="prestamoForm.get('monto')?.errors?.['notInteger']">El monto debe ser un número entero.</span>
       </div>
     </div>
   
     <!-- Plazo -->
     <div>
-      
-      <input class="input" formControlName="plazo" id="plazo" type="number"    placeholder="PLAZO"/>
+      <select class="input" formControlName="plazo" id="plazo">
+        <option value="" disabled selected>Selecciona el plazo</option>
+        <option *ngFor="let plazo of plazos" [value]="plazo">{{ plazo }} meses</option>
+      </select>
       <div *ngIf="prestamoForm.get('plazo')?.invalid && prestamoForm.get('plazo')?.touched" class="error-message">
         <span *ngIf="prestamoForm.get('plazo')?.errors?.['required']">Plazo es requerido.</span>
         <span *ngIf="prestamoForm.get('plazo')?.errors?.['min']">El plazo debe ser mayor a 0.</span>

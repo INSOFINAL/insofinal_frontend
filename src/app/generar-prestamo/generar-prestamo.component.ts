@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ServiceService } from '../authenticacion/service/service.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ export class GenerarPrestamoComponent {
   clienteForm!: FormGroup;
   clienteInfo: any = null;
   errorMessage: string | null = null;
+  plazos: number[] = [1,2,3,4,5,6];
   constructor(
     private fb: FormBuilder,
     private clienteService: ServiceService,
@@ -27,7 +28,7 @@ export class GenerarPrestamoComponent {
   ngOnInit(): void {
     this.prestamoForm = this.fb.group({
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000)]],
+      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000), this.integerValidator]],
       plazo: ['', [Validators.required, Validators.min(1), Validators.max(6)]],
       nombres: [{ value: '', disabled: true }],
       apellidoPaterno: [{ value: '', disabled: true }],
@@ -43,7 +44,13 @@ export class GenerarPrestamoComponent {
     });
   }
 
-
+  integerValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value && !Number.isInteger(value)) {
+      return { notInteger: true };  // Retorna un error si no es entero
+    }
+    return null;  // No hay error si es entero
+  }
   
 
   buscarDatosCliente(dni: string) {
