@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ServiceService {
-  private apiUrl = 'http://localhost:8080/api/v1';
+  private apiUrl = 'http://insoparcialapi-inso.up.railway.app/api/v1';
   private tokenKey = 'authToken';
   constructor(private Http: HttpClient, private router: Router) { }
 
