@@ -16,7 +16,7 @@ export class GenerarPrestamoComponent {
   clienteForm!: FormGroup;
   clienteInfo: any = null;
   errorMessage: string | null = null;
-  plazos: number[] = [1,2,3,4,5,6];
+  plazos: number[] = [1,2,3,4,5,6]; //aumentar numeros para colocar mas plazos
   constructor(
     private fb: FormBuilder,
     private clienteService: ServiceService,
@@ -26,7 +26,7 @@ export class GenerarPrestamoComponent {
   ngOnInit(): void {
     this.prestamoForm = this.fb.group({
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000), this.integerValidator]],
+      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000), this.integerValidator]], //solo modificar los numeros en max y min
       plazo: ['', [Validators.required, Validators.min(1), Validators.max(6)]],
       nombres: [{ value: '', disabled: true }],
       apellidoPaterno: [{ value: '', disabled: true }],
