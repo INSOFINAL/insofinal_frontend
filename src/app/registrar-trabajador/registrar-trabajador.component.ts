@@ -24,7 +24,7 @@ export class RegistrarTrabajadorComponent {
       const { nombre, apellido, username, email, password} = form.value;     
       this.auth.registerWorker({ nombre, apellido, username, email, password }).subscribe(
         (response: any) => {
-          alert('Asesor registrado exitosamente');
+          alert('Trabajador registrado exitosamente');
         },
         (error: string) => {
           console.error('Error de registro:', error);
