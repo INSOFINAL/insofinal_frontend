@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Cliente, Prestamo, Trabajador } from '../../models/models.model';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -149,6 +149,34 @@ export class ServiceService {
     return this.Http.post<any>(`${this.apiUrlWorker}/change-password`, null, { params });
   }
   
+  forgotPassword(email: string) {
+    const body = new HttpParams().set('email', email);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+
+    return this.Http.post(`${this.apiUrlWorker}/forgot-password`, body.toString(), { headers })
+        .pipe(
+            map((response: any) => {
+              
+                return response;
+            }),
+            catchError((error: any) => {
+               
+                console.error('Error en forgotPassword:', error);
+                return throwError(() => new Error(error.error?.error || 'Hubo un error al enviar el correo. Verifique el correo que sea válido'));
+            })
+        );
+}
+
+resetPassword(token: string, newPassword: string) {
+  const body = new HttpParams()
+      .set('token', token)
+      .set('newPassword', newPassword);
+
+  const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+
+  return this.Http.post(`${this.apiUrlWorker}/reset-password`, body.toString(), { headers })
+      .pipe(map((response: any) => response));
+}
   
   
   isAuthenticated(): boolean{

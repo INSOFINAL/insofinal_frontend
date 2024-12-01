@@ -28,6 +28,7 @@
   align-items: center;
   padding-top: 0.5rem;
   background-color: #31312e;
+  text-align: center;
 }
 
 .tittle{
@@ -38,6 +39,7 @@
 }
 
 .inputs-container {
+  
   height: 55%;
   width: 85%;
   display: flex;
@@ -84,8 +86,13 @@
 .inputs-container > p {
   font-weight: 600;
   color: #E1E506;
-  margin-right: 250px;
   
+  
+}
+
+a {
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .image-container{

@@ -1,4 +1,9 @@
-
+<div *ngIf="isLoading" class="modal-loading">
+  <div class="modal-content">
+    <p>Cargando...</p>
+    <div class="spinner"></div>
+  </div>
+</div>
 
 <div class="login-container">
     
@@ -19,10 +24,19 @@
 <form *ngIf="tipoDocumento === 'dni'" [formGroup]="dniForm" (ngSubmit)="crearPrestamoDni()" class="inputs-container">
   
   <input formControlName="dni" class="input" placeholder="DNI" />
+  <div *ngIf="dniForm.get('dni')?.invalid && dniForm.get('dni')?.touched" class="error-message">
+    <span *ngIf="dniForm.get('dni')?.errors?.['required']">DNI es requerido.</span>
+    <span *ngIf="dniForm.get('dni')?.errors?.['pattern']">DNI debe tener 8 dígitos.</span>
+  </div>
   <input formControlName="nombre" class="input" placeholder="Nombre" [readonly]="tipoDocumento === 'dni'"/>
   <input formControlName="apellidoPaterno" class="input" placeholder="Apellido Paterno" [readonly]="tipoDocumento === 'dni'"/>
   <input formControlName="apellidoMaterno" class="input" placeholder="Apellido Materno" [readonly]="tipoDocumento === 'dni'"/>
   <input formControlName="monto" type="number" class="input" placeholder="Monto" />
+  <div *ngIf="dniForm.get('monto')?.invalid && dniForm.get('monto')?.touched" class="error-message">
+    <span *ngIf="dniForm.get('monto')?.errors?.['required']">Monto es requerido.</span>
+    <span *ngIf="dniForm.get('monto')?.errors?.['min']">El monto debe ser mayor a 1.</span>
+    <span *ngIf="dniForm.get('monto')?.errors?.['max']">El monto debe ser menor a 5000.</span>
+  </div>
   <select formControlName="plazo" class="input">
     <option *ngFor="let plazo of plazos" [value]="plazo">{{ plazo }} meses</option>
   </select>
@@ -33,12 +47,21 @@
 <form *ngIf="tipoDocumento === 'ruc'" [formGroup]="rucForm" (ngSubmit)="crearPrestamoRuc()" class="inputs-container">
  
   <input formControlName="ruc" class="input" placeholder="RUC" />
+  <div *ngIf="rucForm.get('ruc')?.invalid && rucForm.get('ruc')?.touched" class="error-message">
+    <span *ngIf="rucForm.get('ruc')?.errors?.['required']">RUC es requerido.</span>
+    <span *ngIf="rucForm.get('ruc')?.errors?.['pattern']">RUC debe tener 11 dígitos.</span>
+  </div>
   <input formControlName="razonSocial" class="input" placeholder="Razón Social" [readonly]="tipoDocumento === 'ruc'"/>
   <input formControlName="direccion" class="input" placeholder="Dirección" [readonly]="tipoDocumento === 'ruc'"/>
   <input formControlName="distrito" class="input" placeholder="Distrito" [readonly]="tipoDocumento === 'ruc'"/>
   <input formControlName="provincia" class="input" placeholder="Provincia" [readonly]="tipoDocumento === 'ruc'"/>
   <input formControlName="departamento" class="input" placeholder="Departamento" [readonly]="tipoDocumento === 'ruc'"/>
   <input formControlName="monto" type="number" class="input" placeholder="Monto" />
+  <div *ngIf="rucForm.get('monto')?.invalid && rucForm.get('monto')?.touched" class="error-message">
+    <span *ngIf="rucForm.get('monto')?.errors?.['required']">Monto es requerido.</span>
+    <span *ngIf="rucForm.get('monto')?.errors?.['min']">El monto debe ser mayor a 1.</span>
+    <span *ngIf="rucForm.get('monto')?.errors?.['max']">El monto debe ser menor a 5000.</span>
+  </div>
   <select formControlName="plazo" class="input">
     <option *ngFor="let plazo of plazos" [value]="plazo">{{ plazo }} meses</option>
   </select>

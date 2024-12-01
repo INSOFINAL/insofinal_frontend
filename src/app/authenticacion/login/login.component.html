@@ -22,6 +22,9 @@
                   </div>
                   
                 <button (click)="login()" class="btn" type="submit">Inicia sesion</button>
+
+                <p>Olvidaste tu contraseña? </p>
+                <a routerLink="/forgot-password">Recuperala aqui</a>
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>

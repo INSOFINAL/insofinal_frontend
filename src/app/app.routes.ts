@@ -9,6 +9,8 @@ import { RegistrarTrabajadorComponent } from './registrar-trabajador/registrar-t
 import { adminGuard } from './authenticacion/guards/admin.guard';
 import { workerGuard } from './authenticacion/guards/worker.guard';
 import { DashboardWorkerComponent } from './dashboard-worker/dashboard-worker.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
 
@@ -77,6 +79,19 @@ export const routes: Routes = [
         component: HistorialPrestamoComponent,
         canActivate: [workerGuard]
     },
+
+    {
+        path: 'forgot-password',
+        title: 'Recuperar contraseña',
+        component: ForgotPasswordComponent,
+        canActivate: [authenticatedGuard]
+      },
+      {
+        path: 'reset-password',
+        title: 'Cambiar Contraseña',
+        component: ResetPasswordComponent,
+        canActivate: [authenticatedGuard]
+      },
 
 
     //redireccion principal

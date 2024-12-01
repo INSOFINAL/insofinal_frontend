@@ -13,6 +13,7 @@ import { run } from 'node:test';
   styleUrl: './generar-prestamo.component.css'
 })
 export class GenerarPrestamoComponent {
+  isLoading: boolean = false;
   prestamoForm!: FormGroup ;
   clienteForm!: FormGroup;
   clienteInfo: any = null;
@@ -135,16 +136,18 @@ export class GenerarPrestamoComponent {
       const prestamoData = { ...this.dniForm.value };
       prestamoData.nroDocumento = prestamoData.dni; // Asignamos el número de documento
       console.log('prestamoData DNI', prestamoData);
-
+      this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
           this.clienteService.crearPrestamo(prestamoData).subscribe({
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              this.isLoading = false;
             },
             error: (error) => {
               console.error('Error al crear préstamo:', error);
+              this.isLoading = false;
             },
           });
         },
@@ -157,9 +160,13 @@ export class GenerarPrestamoComponent {
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
                 this.abrirPdfBlob(pdfBase64);
+                this.isLoading = false;
               },
               error: (error) => {
                 console.error('Error al crear préstamo:', error);
+                
+                alert('El cliente supera los 5000 mensuales');
+                this.isLoading = false;
               },
             });
           }
@@ -174,16 +181,18 @@ export class GenerarPrestamoComponent {
       const prestamoData = { ...this.rucForm.value };
       prestamoData.nroDocumento = prestamoData.ruc; // Asignamos el número de documento
       console.log('prestamoData RUC', prestamoData);
-
+      this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
           this.clienteService.crearPrestamo(prestamoData).subscribe({
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              this.isLoading = false;
             },
             error: (error) => {
               console.error('Error al crear préstamo:', error);
+              this.isLoading = false;
             },
           });
         },
@@ -196,9 +205,12 @@ export class GenerarPrestamoComponent {
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
                 this.abrirPdfBlob(pdfBase64);
+                this.isLoading = false;
               },
               error: (error) => {
                 console.error('Error al crear préstamo:', error);
+                this.isLoading = false;
+                alert('El cliente supera los 5000 mensuales');
               },
             });
           }
