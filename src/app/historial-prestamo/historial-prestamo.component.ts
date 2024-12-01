@@ -80,7 +80,7 @@ export class HistorialPrestamoComponent {
     this.prestamoService.getPrestamosPorDni(this.nroDocumento).subscribe(data => {
     
       this.prestamos = data; 
-      console.log(data)
+ 
     }, error => {
       console.error('Error fetching prestamos', error); 
     });

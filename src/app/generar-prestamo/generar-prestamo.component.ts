@@ -86,7 +86,7 @@ export class GenerarPrestamoComponent {
     if (this.tipoDocumento === 'dni') {
       this.clienteService.obtenerDatosPorDni(documento).subscribe(
         (data) => {
-          console.log(data)
+      
           if (data) {
             this.dniForm.patchValue({
               nroDocumento: data.numeroDocumento,
@@ -135,7 +135,7 @@ export class GenerarPrestamoComponent {
     if (this.dniForm.valid) {
       const prestamoData = { ...this.dniForm.value };
       prestamoData.nroDocumento = prestamoData.dni; // Asignamos el número de documento
-      console.log('prestamoData DNI', prestamoData);
+  
       this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
@@ -165,7 +165,7 @@ export class GenerarPrestamoComponent {
               error: (error) => {
                 console.error('Error al crear préstamo:', error);
                 
-                alert('El cliente supera los 5000 mensuales');
+             
                 this.isLoading = false;
               },
             });
@@ -180,7 +180,7 @@ export class GenerarPrestamoComponent {
     if (this.rucForm.valid) {
       const prestamoData = { ...this.rucForm.value };
       prestamoData.nroDocumento = prestamoData.ruc; // Asignamos el número de documento
-      console.log('prestamoData RUC', prestamoData);
+  
       this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
@@ -210,7 +210,6 @@ export class GenerarPrestamoComponent {
               error: (error) => {
                 console.error('Error al crear préstamo:', error);
                 this.isLoading = false;
-                alert('El cliente supera los 5000 mensuales');
               },
             });
           }
