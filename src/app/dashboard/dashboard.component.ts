@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit{
     this.Service.obtenerPrestamosPendientes().subscribe(
       (data) => {
         this.prestamos = data;
-       console.log(data)
+
       },
       (error) => {
         console.error('Error al cargar los préstamos pendientes', error);
