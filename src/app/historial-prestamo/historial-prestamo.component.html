@@ -3,16 +3,29 @@
     <a routerLink="/dashboard"><img class="image-left" src="https://cdn-icons-png.flaticon.com/512/6475/6475938.png" alt="login"> </a>
     <h1 class="tittle">Historial de Préstamos</h1>
     
-      <input class="input" [(ngModel)]="dni" (ngModelChange)="buscarPrestamos()" placeholder="Ingrese el DNI" />
+      <input class="input" [(ngModel)]="nroDocumento" (ngModelChange)="buscarPrestamos()" placeholder="Ingrese el Numero de Documento" />
     
     
-    <div *ngIf="prestamos.length > 0">
+    <div *ngIf="prestamos.length > 0 && nroDocumento.length === 8">
       <h3>Datos del Cliente</h3>
-      <p><strong>Nombres:</strong> {{ prestamos[0].cliente.nombres }}</p>
+      <p><strong>Nombres:</strong> {{ prestamos[0].cliente.nombre }}</p>
       <p><strong>Apellido Paterno:</strong> {{ prestamos[0].cliente.apellidoPaterno }}</p>
       <p><strong>Apellido Materno:</strong> {{ prestamos[0].cliente.apellidoMaterno }}</p>
-      <p><strong>DNI:</strong> {{ prestamos[0].cliente.dni }}</p>
+      <p><strong>DNI:</strong> {{ prestamos[0].cliente.nroDocumento }}</p>
       <p><strong>Nacionalidad:</strong> {{ prestamos[0].cliente.nacionalidad }}</p>
+    </div>
+
+
+
+    <div *ngIf="prestamos.length > 0 && nroDocumento.length === 11">
+      <h3>Datos del Cliente</h3>
+      <p><strong>Nombres:</strong> {{ prestamos[0].cliente.nombre }}</p>
+      <p><strong>DNI:</strong> {{ prestamos[0].cliente.nroDocumento }}</p>
+      <p><strong>Departamento:</strong> {{ prestamos[0].cliente.departamento }}</p>
+      <p><strong>Distrito:</strong> {{ prestamos[0].cliente.distrito }}</p>
+      <p><strong>Provincia:</strong> {{ prestamos[0].cliente.provincia }}</p>
+      <p><strong>Direccion:</strong> {{ prestamos[0].cliente.direccion }}</p>
+      
     </div>
   
     <!-- Itera sobre los préstamos y muestra sus detalles -->
@@ -23,18 +36,29 @@
         <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        <button 
-  *ngIf="todosPagosPendientes(prestamo)" 
-  (click)="cancelarPrestamo(prestamo.id)" 
-  class="btn btn-danger">
-  Cancelar Préstamo
-</button>
+        <button (click)="imprimirPrestamo(prestamo.id)" title="Generar PDF">
+          <img
+            src="printer.png"
+            alt="Imprimir"
+            style="width: 24px; height: 24px; cursor: pointer;"
+          />
+        </button>
+        
+          <button 
+              *ngIf="todosPagosPendientes(prestamo)" 
+              (click)="cancelarPrestamo(prestamo.id)" 
+              class="btn btn-danger">
+              Cancelar Préstamo
+          </button>
         <h4>Cronograma de Pagos</h4>
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>Fecha de Pago</th>
               <th>Monto de la Cuota</th>
+              <th>Pago Intereses</th>
+              <th>Amortización</th>
+              <th>Saldo Restante</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -43,6 +67,9 @@
             <tr *ngFor="let pago of prestamo.cronogramaPagos; let i = index">
               <td>{{ pago.fechaPago | date:'dd/MM/yyyy' }}</td>
               <td>{{ pago.montoCuota | currency:'PEN':'symbol':'1.2-2' }}</td>
+              <td>{{ pago.pagoIntereses | currency:'PEN':'symbol':'1.2-2'}}</td>
+              <td>{{ pago.amortizacion | currency:'PEN':'symbol':'1.2-2'}}</td>
+              <td>{{ pago.saldoRestante | currency:'PEN':'symbol':'1.2-2'}}</td>
               <td [ngClass]="{'deuda': pago.estado === 'Deuda', 'pagado': pago.estado === 'Pagado', 'pendiente': pago.estado === 'Pendiente'}">
                 {{ pago.estado }}
               </td>
@@ -59,13 +86,11 @@
       </div>
     </div>
   
-    <div *ngIf="prestamos.length === 0 && dni">
-      <p>No se encontraron préstamos para este DNI.</p>
+    <div *ngIf="prestamos.length === 0 && nroDocumento">
+      <p>No se encontraron préstamos para este numero de documento.</p>
     </div>
   </div>
   
 </div>
 
-  
-  <!-- Muestra los datos del cliente solo una vez si existen préstamos -->
   

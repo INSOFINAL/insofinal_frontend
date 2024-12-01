@@ -6,7 +6,7 @@
 }
 
 .login-container {
-    height: 700px; /* Cambiar a auto para que se adapte al contenido */
+    height: 100%; /* Cambiar a auto para que se adapte al contenido */
     width: 90%; /* Cambiar a un ancho relativo */
     max-width: 1000px; /* Añadir un max-width para limitar el tamaño en pantallas grandes */
     margin: 1em auto;
@@ -41,6 +41,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    padding-bottom: 20px;
 }
 
 .input,

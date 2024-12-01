@@ -28,3 +28,14 @@ export interface Cliente{
     username: string;
     password?: string;
   }
+
+
+  export interface User{
+    id?: number;
+    img_profile?: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: string;
+  }
+  

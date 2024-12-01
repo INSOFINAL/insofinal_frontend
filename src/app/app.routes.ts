@@ -4,29 +4,82 @@ import { HistorialPrestamoComponent } from './historial-prestamo/historial-prest
 import { LoginComponent } from './authenticacion/login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { authenticatedGuard } from './authenticacion/guards/authenticated.guard';
-import { authGuard } from './authenticacion/guards/auth.guard';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RegistrarTrabajadorComponent } from './registrar-trabajador/registrar-trabajador.component';
+import { adminGuard } from './authenticacion/guards/admin.guard';
+import { workerGuard } from './authenticacion/guards/worker.guard';
+import { DashboardWorkerComponent } from './dashboard-worker/dashboard-worker.component';
 
 export const routes: Routes = [
+
+
+    //rutas admin
     {
         path:'loan-history',
         title: 'Historial',
         component: HistorialPrestamoComponent,
-        canActivate: [authGuard]
+        canActivate: [adminGuard]
     },
 
     {
         path:'dashboard',
         title: 'Inicio',
         component: DashboardComponent,
-        canActivate: [authGuard]
+        canActivate: [adminGuard]
     },
+    
     {
         path:'generate-loan',
         title: 'Generar Prestamo',
         component: GenerarPrestamoComponent,
-        canActivate: [authGuard]
+        canActivate: [adminGuard]
     },
 
+    {
+        path: 'change-password',
+        title: 'Cambie su contraseña',
+        component: ChangePasswordComponent,
+        canActivate: [adminGuard]
+    },
+    {
+        path: 'register-worker',
+        title: 'Registrar Trabajador',
+        component: RegistrarTrabajadorComponent,
+        canActivate: [adminGuard]
+    },
+
+//rutas worker
+    {
+        path:'dashboard-worker',
+        title: 'Inicio',
+        component: DashboardWorkerComponent,
+        canActivate: [workerGuard]
+    },
+    {
+        path: 'change-password-worker',
+        title: 'Cambie su contraseña',
+        component: ChangePasswordComponent,
+        canActivate: [workerGuard]
+    },
+
+
+    {
+        path:'generate-loan-w',
+        title: 'Generar Prestamo',
+        component: GenerarPrestamoComponent,
+        canActivate: [workerGuard]
+    },
+
+
+    {
+        path:'loan-history-w',
+        title: 'Historial',
+        component: HistorialPrestamoComponent,
+        canActivate: [workerGuard]
+    },
+
+
+    //redireccion principal
     {
         path:'home',
         title: 'Prestamos',

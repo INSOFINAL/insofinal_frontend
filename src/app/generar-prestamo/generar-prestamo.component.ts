@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModu
 import { ServiceService } from '../authenticacion/service/service.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { run } from 'node:test';
 
 @Component({
   selector: 'app-generar-prestamo',
@@ -16,7 +17,10 @@ export class GenerarPrestamoComponent {
   clienteForm!: FormGroup;
   clienteInfo: any = null;
   errorMessage: string | null = null;
-  plazos: number[] = [1,2,3,4,5,6]; //aumentar numeros para colocar mas plazos
+  plazos: number[] = [1, 6]; 
+  tipoDocumento: string = 'dni'; 
+  dniForm!: FormGroup;
+  rucForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
     private clienteService: ServiceService,
@@ -24,91 +28,196 @@ export class GenerarPrestamoComponent {
   ) { }
 
   ngOnInit(): void {
-    this.prestamoForm = this.fb.group({
+    this.dniForm = this.fb.group({
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
-      monto: ['', [Validators.required, Validators.min(300), Validators.max(3000), this.integerValidator]], //solo modificar los numeros en max y min
+      nroDocumento: ['', [Validators.required]],
+      nombre: ['', [Validators.required]],
+      apellidoPaterno: ['', [Validators.required]],
+      apellidoMaterno: ['', [Validators.required]],
+      monto: ['', [Validators.required, Validators.min(1), Validators.max(5000)]],
       plazo: ['', [Validators.required, Validators.min(1), Validators.max(6)]],
-      nombres: [{ value: '', disabled: true }],
-      apellidoPaterno: [{ value: '', disabled: true }],
-      apellidoMaterno: [{ value: '', disabled: true }]
     });
 
-   
-    this.prestamoForm.get('dni')?.valueChanges.subscribe(dni => {
-      if (this.prestamoForm.get('dni')?.valid) {
+    // Inicializamos el formulario para RUC
+    this.rucForm = this.fb.group({
+      ruc: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
+      nroDocumento: ['', [Validators.required]],
+      razonSocial: ['', [Validators.required]],
+      direccion: ['', [Validators.required]],
+      distrito: ['', [Validators.required]],
+      provincia: ['', [Validators.required]],
+      departamento: ['', [Validators.required]],
+      monto: ['', [Validators.required, Validators.min(1), Validators.max(5000)]],
+      plazo: ['', [Validators.required, Validators.min(1), Validators.max(6)]],
+    });
+  
+
+    this.dniForm.get('dni')?.valueChanges.subscribe(dni => {
+      if (this.dniForm.get('dni')?.valid) {
         this.errorMessage = null;
         this.buscarDatosCliente(dni);
       }
     });
+
+    this.rucForm.get('ruc')?.valueChanges.subscribe(ruc => {
+      if (this.rucForm.get('ruc')?.valid) {
+        this.errorMessage = null;
+        this.buscarDatosCliente(ruc);
+      }
+    });
+  
   }
 
   integerValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
     if (value && !Number.isInteger(value)) {
-      return { notInteger: true };  // Retorna un error si no es entero
+      return { notInteger: true };  
     }
-    return null;  // No hay error si es entero
+    return null; 
   }
+
+
   
 
-  buscarDatosCliente(dni: string) {
-    this.clienteService.obtenerDatosPorDni(dni).subscribe(
-      (data) => {
-        if (data) {
-          this.clienteInfo = data;
-          this.prestamoForm.patchValue({
-            nombres: data.nombres,
-            apellidoPaterno: data.apellidoPaterno,
-            apellidoMaterno: data.apellidoMaterno
-          });
-          this.errorMessage = null; // Limpiar mensaje de error si se encuentra el cliente
-        } else {
-          this.errorMessage = 'No existe esa persona con DNI, no podemos realizar el prestamo'; // Mostrar mensaje de error si no se encuentra el cliente
+  buscarDatosCliente(documento: string): void {
+    
+    
+    if (this.tipoDocumento === 'dni') {
+      this.clienteService.obtenerDatosPorDni(documento).subscribe(
+        (data) => {
+          console.log(data)
+          if (data) {
+            this.dniForm.patchValue({
+              nroDocumento: data.numeroDocumento,
+              nombre: data.nombres,
+              apellidoPaterno: data.apellidoPaterno,
+              apellidoMaterno: data.apellidoMaterno
+            });
+            this.errorMessage = null;
+          } else {
+            this.errorMessage = 'No existe esa persona con DNI, no podemos realizar el préstamo.';
+          }
+        },
+        (error) => {
+          console.error('Error al buscar datos del cliente por DNI:', error);
+          this.errorMessage = 'Error al buscar datos del cliente por DNI.';
         }
-      },
-      (error) => {
-        console.error('Error al buscar datos del cliente', error);
-
-        this.errorMessage = 'Error al buscar datos del cliente'; // Mensaje de error en caso de fallo en la solicitud
-      }
-    );
+      );
+    } else if (this.tipoDocumento === 'ruc') {
+      this.clienteService.obtenerDatosPorDni(documento).subscribe(
+        (data) => {
+          if (data) {
+            this.rucForm.patchValue({
+              nroDocumento: data.numeroDocumento,
+              razonSocial: data.razonSocial,
+              direccion: data.direccion,
+              distrito: data.distrito,
+              provincia: data.provincia,
+              departamento: data.departamento
+            });
+            this.errorMessage = null;
+          } else {
+            this.errorMessage = 'No existe esa empresa con RUC, no podemos realizar el préstamo.';
+          }
+        },
+        (error) => {
+          console.error('Error al buscar datos del cliente por RUC:', error);
+          this.errorMessage = 'Error al buscar datos del cliente por RUC.';
+        }
+      );
+    }
   }
 
-  crearPrestamo(): void {
-    if (this.prestamoForm?.valid) {
-      // Primero, intenta registrar al cliente
-      this.clienteService.registrocliente(this.prestamoForm.value).subscribe({
-        next: (cliente) => {
-          console.log('Cliente creado: ', cliente);
   
-          // Si el cliente se creó correctamente, procede a crear el préstamo
-          this.clienteService.crearPrestamo(this.prestamoForm.value).subscribe({
-            next: (prestamo) => {
-              console.log('Préstamo creado:', prestamo);
-              this.router.navigate(['/loan-history']);
+
+  crearPrestamoDni(): void {
+    if (this.dniForm.valid) {
+      const prestamoData = { ...this.dniForm.value };
+      prestamoData.nroDocumento = prestamoData.dni; // Asignamos el número de documento
+      console.log('prestamoData DNI', prestamoData);
+
+      this.clienteService.registrocliente(prestamoData).subscribe({
+        next: (cliente) => {
+          this.clienteService.crearPrestamo(prestamoData).subscribe({
+            next: (pdfBase64) => {
+              console.log('Préstamo creado. Abriendo PDF...');
+              this.abrirPdfBlob(pdfBase64);
             },
             error: (error) => {
               console.error('Error al crear préstamo:', error);
-            }
+            },
           });
         },
         error: (error) => {
           console.error('Error al crear el cliente: ', error);
   
-          // Si el cliente ya existe, puedes proceder a crear el préstamo
-          if (error.status === 409) { // Suponiendo que el servidor devuelve un 409 si el cliente ya existe
-            this.clienteService.crearPrestamo(this.prestamoForm.value).subscribe({
-              next: (prestamo) => {
-                console.log('Préstamo creado:', prestamo);
-                this.router.navigate(['/loan-history']);
+          // Si el cliente ya existe, proceder a crear el préstamo
+          if (error.status === 409) {
+            this.clienteService.crearPrestamo(this.dniForm.value).subscribe({
+              next: (pdfBase64) => {
+                console.log('Préstamo creado. Abriendo PDF...');
+                this.abrirPdfBlob(pdfBase64);
               },
               error: (error) => {
                 console.error('Error al crear préstamo:', error);
-              }
+              },
             });
           }
-        }
+        },
       });
     }
+  }
+
+  // Función para manejar la creación de préstamo para RUC
+  crearPrestamoRuc(): void {
+    if (this.rucForm.valid) {
+      const prestamoData = { ...this.rucForm.value };
+      prestamoData.nroDocumento = prestamoData.ruc; // Asignamos el número de documento
+      console.log('prestamoData RUC', prestamoData);
+
+      this.clienteService.registrocliente(prestamoData).subscribe({
+        next: (cliente) => {
+          this.clienteService.crearPrestamo(prestamoData).subscribe({
+            next: (pdfBase64) => {
+              console.log('Préstamo creado. Abriendo PDF...');
+              this.abrirPdfBlob(pdfBase64);
+            },
+            error: (error) => {
+              console.error('Error al crear préstamo:', error);
+            },
+          });
+        },
+        error: (error) => {
+          console.error('Error al crear el cliente: ', error);
+  
+          // Si el cliente ya existe, proceder a crear el préstamo
+          if (error.status === 409) {
+            this.clienteService.crearPrestamo(this.rucForm.value).subscribe({
+              next: (pdfBase64) => {
+                console.log('Préstamo creado. Abriendo PDF...');
+                this.abrirPdfBlob(pdfBase64);
+              },
+              error: (error) => {
+                console.error('Error al crear préstamo:', error);
+              },
+            });
+          }
+        },
+      });
+    }
+  }
+  cambiarTipoDocumento(tipo: string): void {
+    this.tipoDocumento = tipo; // Actualiza el tipo de documento seleccionado
+  }
+  abrirPdfBlob(pdfBlob: Blob): void {
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank'); // '_blank' para abrir en nueva pestaña
+  }
+  
+  base64ToBlob(base64: string, contentType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length).fill(null).map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
   }
 }

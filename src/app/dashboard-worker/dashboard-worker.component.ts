@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ServiceService } from '../authenticacion/service/service.service';
+import { Component } from '@angular/core';
 import { Trabajador } from '../models/models.model';
+import { ServiceService } from '../authenticacion/service/service.service';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard-worker',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, CommonModule, ReactiveFormsModule, FormsModule, RouterLinkActive],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  imports: [RouterLink, CommonModule, ReactiveFormsModule, FormsModule, RouterLinkActive],
+  templateUrl: './dashboard-worker.component.html',
+  styleUrl: './dashboard-worker.component.css'
 })
-export class DashboardComponent implements OnInit{
+export class DashboardWorkerComponent {
   user: Trabajador | null = null;
   prestamos: any[] = [];
   dni!: string;
@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit{
     this.Service.obtenerPrestamosPendientes().subscribe(
       (data) => {
         this.prestamos = data;
-       console.log(data)
+       
       },
       (error) => {
         console.error('Error al cargar los préstamos pendientes', error);
@@ -109,8 +109,7 @@ export class DashboardComponent implements OnInit{
 
 
   todosPagosPendientes(prestamo: any): boolean {
+    // Revisa si todos los pagos están en estado 'Pendiente' o 'Deuda'
     return prestamo.cronogramaPagos.every((pago: any) => pago.estado !== 'Pagado');
   }
-  
-
 }

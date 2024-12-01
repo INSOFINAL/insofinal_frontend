@@ -28,9 +28,9 @@ export class LoginComponent {
     }
   
     this.authService.login(this.username, this.password, (token) => {
-      console.log('Token recibido en el callback:', token);
+    
     }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: () => {},
       error: (err) => {
         console.error('Login Failed', err);
         this.errorMessage = 'Error de autenticación. Por favor, revisa tus credenciales.';

@@ -4,9 +4,6 @@
     
 </div>
 <div class="header">
-    <a routerLink="/register-worker" class="cerrar-sesion">
-        <h3>Registrar Trabajador</h3>
-    </a>
     <a (click)="logout()" class="cerrar-sesion">
         <h3>Cerrar Sesion</h3>
     </a>
@@ -19,7 +16,7 @@
             <h1>Generar Préstamo</h1>
             <img class="image-left" src="https://cdn-icons-png.flaticon.com/512/6475/6475938.png" alt="login">  
             <p>Accede a la pestaña para generar un préstamo!</p>
-            <button class="btnn"><a routerLink="/generate-loan">Click aquí</a></button>
+            <button class="btnn"><a routerLink="/generate-loan-w">Click aquí</a></button>
         </form>
         
     </div>
@@ -28,45 +25,25 @@
             <h1>Historial de Préstamos</h1>
             <img class="image-container" src="https://cdn2.iconfinder.com/data/icons/arrows-48/100/Arrow_time-512.png" alt="login">
             <p>Accede a tu historial de préstamos realizados</p>
-            <button class="btnn"><a style="text-decoration: none;"  routerLink="/loan-history">Click aquí</a></button>
+            <button class="btnn"><a style="text-decoration: none;"  routerLink="/loan-history-w">Click aquí</a></button>
         </form>
     </div> 
 </div>
-
 
 
 <!-- Itera sobre los préstamos y muestra sus detalles -->
 <div *ngIf="prestamos.length > 0" class="prestamos-container">
     <h3>Préstamos Encontrados</h3>
     <div *ngFor="let prestamo of prestamos" class="prestamo-cuadro">
-
-      <div *ngIf="prestamo.cliente.nroDocumento.length === 8">
-        <h4>Detalles del Préstamo</h4>
-        <h3>Datos del Cliente</h3>
-        <p><strong>Nombres:</strong> {{ prestamo.cliente.nombre }}</p>
-        <p><strong>Apellido Paterno:</strong> {{ prestamo.cliente.apellidoPaterno }}</p>
-        <p><strong>Apellido Materno:</strong> {{ prestamo.cliente.apellidoMaterno }}</p>
-        <p><strong>DNI:</strong> {{ prestamo.cliente.nroDocumento }}</p>
-        <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
-        <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
-        <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        
-      </div>
-
-      <div *ngIf="prestamo.cliente.nroDocumento.length === 11">
-        <h3>Datos del Cliente</h3>
-      <p><strong>Nombres:</strong> {{ prestamo.cliente.nombre }}</p>
-      <p><strong>DNI:</strong> {{ prestamo.cliente.nroDocumento }}</p>
-      <p><strong>Departamento:</strong> {{ prestamo.cliente.departamento }}</p>
-      <p><strong>Distrito:</strong> {{ prestamo.cliente.distrito }}</p>
-      <p><strong>Provincia:</strong> {{ prestamo.cliente.provincia }}</p>
-      <p><strong>Direccion:</strong> {{ prestamo.cliente.direccion }}</p>
+      <h4>Detalles del Préstamo</h4>
+      <h3>Datos del Cliente</h3>
+      <p><strong>Nombres:</strong> {{ prestamos[0].cliente.nombre }}</p>
+      <p><strong>Apellido Paterno:</strong> {{ prestamos[0].cliente.apellidoPaterno }}</p>
+      <p><strong>Apellido Materno:</strong> {{ prestamos[0].cliente.apellidoMaterno }}</p>
+      <p><strong>DNI:</strong> {{ prestamos[0].cliente.nroDocumento }}</p>
       <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
-        <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
-        <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        
-      </div>
-      
+      <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
+      <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
       <button (click)="imprimirPrestamo(prestamo.id)" title="Generar PDF">
         <img
           src="printer.png"

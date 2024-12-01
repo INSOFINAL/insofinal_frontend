@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class HistorialPrestamoComponent {
   prestamos: any[] = [];
-  dni!: string;
+  nroDocumento!: string;
 
   constructor(private prestamoService: ServiceService){}
 
@@ -23,9 +23,9 @@ export class HistorialPrestamoComponent {
 
 
   marcarComoPagado(pagoId: number) {
-    console.log('Pago ID:', pagoId);
+ 
     this.prestamoService.marcarPagoComoPagado(pagoId).subscribe(response => {
-      console.log('Pago marcado como pagado', response);
+    
       this.buscarPrestamos(); // Actualizar la lista de préstamos
     }, error => {
       console.error('Error al marcar pago como pagado', error);
@@ -49,6 +49,19 @@ export class HistorialPrestamoComponent {
     return true;
   }
 
+
+  imprimirPrestamo(prestamoId: number): void {
+    this.prestamoService.generarPdfPrestamo(prestamoId).subscribe({
+      next: (pdfBlob) => {
+        const pdfUrl = URL.createObjectURL(pdfBlob); // Crea una URL para el archivo PDF
+        window.open(pdfUrl, '_blank'); // Abre el PDF en una nueva pestaña
+      },
+      error: (error) => {
+        console.error('Error al generar el PDF del préstamo:', error);
+      }
+    });
+  }
+
   cancelarPrestamo(id: number) {
     if (confirm('¿Estás seguro de que deseas cancelar este préstamo?')) {
       this.prestamoService.eliminarPrestamo(id).subscribe(() => {
@@ -64,11 +77,12 @@ export class HistorialPrestamoComponent {
   }
 
   buscarPrestamos() {
-    this.prestamoService.getPrestamosPorDni(this.dni).subscribe(data => {
-      console.log(data); // Imprime la respuesta en la consola para verificar
-      this.prestamos = data; // Asigna la respuesta
+    this.prestamoService.getPrestamosPorDni(this.nroDocumento).subscribe(data => {
+    
+      this.prestamos = data; 
+      console.log(data)
     }, error => {
-      console.error('Error fetching prestamos', error); // Verifica la respuesta en la consola
+      console.error('Error fetching prestamos', error); 
     });
   }
 }

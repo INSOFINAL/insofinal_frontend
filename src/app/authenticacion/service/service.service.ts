@@ -1,19 +1,40 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Cliente, Prestamo, Trabajador } from '../../models/models.model';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-  private apiUrl = 'https://insoparcialapi-inso.up.railway.app/api/v1';
+  private apiUrlWorker = `${environment.apiUrl}api/v1/trabajador`;
+  private apiUrl = `${environment.apiUrl}api/v1`;
   private tokenKey = 'authToken';
   constructor(private Http: HttpClient, private router: Router) { }
 
   getPrestamoById(prestamoId: number): Observable<any> {
     return this.Http.get<any>(`${this.apiUrl}/${prestamoId}`);
+  }
+
+  obtenerPrestamosPendientes(): Observable<any> {
+    return this.Http.get<any>(`${this.apiUrl}/prestamos/prestamos-pendientes`);
+  }
+
+
+  registerWorker(requestBody: any): Observable<any> {
+    return this.Http.post(`${this.apiUrlWorker}/register`, requestBody).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('Error del lado del cliente:', error.error.message);
+    } else {
+      console.error(`Error del backend: ${error.status}, ` + `mensaje: ${error.error}`);
+    }
+    return throwError('Hubo un problema con el registro; por favor intenta nuevamente.');
   }
 
   // Buscar préstamos por DNI
@@ -25,9 +46,13 @@ export class ServiceService {
     return this.Http.put<any>(`${this.apiUrl}/prestamos/marcarPagado/${pagoId}`, {});
   }
 
+  generarPdfPrestamo(prestamoId: number): Observable<Blob> {
+    return this.Http.get(`${this.apiUrl}/prestamos/${prestamoId}/pdf`, { responseType: 'blob' });
+  }
 
-  crearPrestamo(prestamoData: Prestamo): Observable<Prestamo> {
-    return this.Http.post<Prestamo>(`${this.apiUrl}/prestamos/crear`, prestamoData);
+
+  crearPrestamo(prestamoData: Prestamo): Observable<Blob> {
+    return this.Http.post(`${this.apiUrl}/prestamos/crear`, prestamoData, { responseType: 'blob' });
   }
 
   eliminarPrestamo(id: number): Observable<void> {
@@ -49,15 +74,49 @@ export class ServiceService {
       .set('username', username)
       .set('password', password);
     
-    return this.Http.post<any>(`${this.apiUrl}/trabajador/login`, null, { params }).pipe(
+    return this.Http.post<any>(`${this.apiUrlWorker}/login`, null, { params }).pipe(
       tap(response => {
         if (response.token) {
-          console.log(response.token);
           this.setToken(response.token);
-          callback(response.token);
+
+          const userRole = this.getRoleFromToken();
+
+          if (userRole === 'WORKER') {
+         
+            if (response.requiresPasswordChange) {
+             
+              this.router.navigate(['/change-password-worker']);
+            } else {
+              
+              this.router.navigate(['/dashboard-worker']);
+            }
+          } else if (userRole === 'ADMIN') {
+           
+            if (response.requiresPasswordChange) {
+             
+              this.router.navigate(['/change-password']);
+            } else {
+              
+              this.router.navigate(['/dashboard']);
+            }
+          }
+            else {
+            console.error('Rol de usuario no reconocido');
+          }
         }
       })
     );
+  }
+
+
+
+  getRoleFromToken(): string | null {
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.role || null;
+    }
+    return null;
   }
   
   private setToken(token:string):void{
@@ -71,6 +130,25 @@ export class ServiceService {
       return null;
     }
   }
+
+  getUsernameFromToken(): string | null {
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.username || null;  
+    }
+    return null;
+  }
+
+
+  changePassword(email: string, newPassword: string): Observable<any> {
+    const params = new HttpParams()
+      .set('username', email)
+      .set('newPassword', newPassword);
+  
+    return this.Http.post<any>(`${this.apiUrlWorker}/change-password`, null, { params });
+  }
+  
   
   
   isAuthenticated(): boolean{
@@ -93,7 +171,7 @@ export class ServiceService {
     const token = this.getToken();  // Obtiene el token del localStorage
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    return this.Http.get<Trabajador>(`${this.apiUrl}/trabajador/me`, { headers });
+    return this.Http.get<Trabajador>(`${this.apiUrlWorker}/me`, { headers });
   }
   
 }
