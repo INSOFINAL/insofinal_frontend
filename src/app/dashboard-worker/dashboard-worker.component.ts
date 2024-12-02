@@ -77,7 +77,11 @@ export class DashboardWorkerComponent {
     // Si no se encontró ningún otro pago pendiente antes del actual, este es el primero
     return true;
   }
-
+  
+  ajustarZonaHoraria(fechaUTC: string): string {
+    const fecha = new Date(fechaUTC);
+    return fecha.toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  }
 
   imprimirPrestamo(prestamoId: number): void {
     this.Service.generarPdfPrestamo(prestamoId).subscribe({

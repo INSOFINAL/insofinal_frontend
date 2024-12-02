@@ -25,6 +25,12 @@ export class DashboardComponent implements OnInit{
     this.cargarPrestamosPendientes();
   }
 
+
+  ajustarZonaHoraria(fechaUTC: string): string {
+    const fecha = new Date(fechaUTC);
+    return fecha.toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  }
+
   logout():void{ 
     
     this.Service.logout();

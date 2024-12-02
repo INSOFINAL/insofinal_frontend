@@ -47,7 +47,7 @@
         <p><strong>Apellido Paterno:</strong> {{ prestamo.cliente.apellidoPaterno }}</p>
         <p><strong>Apellido Materno:</strong> {{ prestamo.cliente.apellidoMaterno }}</p>
         <p><strong>DNI:</strong> {{ prestamo.cliente.nroDocumento }}</p>
-        <p><strong>Fecha Creación:</strong> {{ prestamo.fechaCreacion | date: 'yyyy-MM-dd HH:mm:ss' : 'America/Lima' }}</p>
+        <p><strong>Fecha Creación:</strong> {{ ajustarZonaHoraria(prestamo.fechaCreacion) }}</p>
         <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
