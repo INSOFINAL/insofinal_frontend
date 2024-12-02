@@ -221,8 +221,15 @@ export class GenerarPrestamoComponent {
     this.tipoDocumento = tipo; // Actualiza el tipo de documento seleccionado
   }
   abrirPdfBlob(pdfBlob: Blob): void {
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl, '_blank'); // '_blank' para abrir en nueva pestaña
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.target = '_blank'; // Abrir en una nueva pestaña
+    a.download = 'prestamo.pdf'; // Nombre del archivo para descargar
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl); // Liberar memoria
   }
   
   base64ToBlob(base64: string, contentType: string): Blob {
