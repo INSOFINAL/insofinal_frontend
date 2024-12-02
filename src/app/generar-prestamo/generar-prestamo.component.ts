@@ -139,51 +139,43 @@ export class GenerarPrestamoComponent {
       this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
-          this.clienteService.crearPrestamo(prestamoData).subscribe({
-            next: (pdfBase64) => {
-              console.log('Préstamo creado. Abriendo PDF...');
-              this.abrirPdfBlob(pdfBase64);
-              console.log(prestamoData);
-                console.log(pdfBase64);
-                this.dniForm.reset();
-              window.location.reload();
-              this.isLoading = false;
-            },
-            error: (error) => {
-              console.error('Error al crear préstamo:', error);
-              this.isLoading = false;
-            },
-          });
+          // Si el cliente se registra correctamente, se crea el préstamo
+          this.crearPrestamo(prestamoData);
         },
         error: (error) => {
           console.error('Error al crear el cliente: ', error);
   
-          // Si el cliente ya existe, proceder a crear el préstamo
+          // Si el cliente ya existe (Error 409), proceder a crear solo el préstamo
           if (error.status === 409) {
-            this.clienteService.crearPrestamo(this.dniForm.value).subscribe({
-              next: (pdfBase64) => {
-                console.log('Préstamo creado. Abriendo PDF...');
-                console.log(this.dniForm.value);
-                console.log(pdfBase64);
-                this.dniForm.reset();
-                this.abrirPdfBlob(pdfBase64);
-                window.location.reload();
-                this.isLoading = false;
-              },
-              error: (error) => {
-                console.error('Error al crear préstamo:', error);
-                
-             
-                this.isLoading = false;
-              },
-            });
+            console.log('Cliente ya existe, creando solo préstamo...');
+            this.crearPrestamo(prestamoData);
+          } else {
+            alert(`Error al crear cliente: ${error.message || 'Ocurrió un error inesperado.'}`);
+            this.isLoading = false;
           }
-        },
+        }
       });
     }
   }
-
-  // Función para manejar la creación de préstamo para RUC
+  
+  crearPrestamo(prestamoData: any): void {
+    this.clienteService.crearPrestamo(prestamoData).subscribe({
+      next: (response) => {
+        // Si el préstamo se creó exitosamente
+        alert('Préstamo creado exitosamente');
+        this.dniForm.reset(); 
+        this.router.navigate(['/loan-history']); 
+        this.isLoading = false;
+      },
+      error: (error) => {
+        // Mostrar error al crear préstamo
+        console.log(error)
+        alert(`Error al crear préstamo: ${error.error.mensaje || 'Ocurrió un error inesperado.'}`);
+        this.isLoading = false;
+      }
+    });
+  }
+  
   crearPrestamoRuc(): void {
     if (this.rucForm.valid) {
       const prestamoData = { ...this.rucForm.value };
@@ -192,74 +184,33 @@ export class GenerarPrestamoComponent {
       this.isLoading = true;
       this.clienteService.registrocliente(prestamoData).subscribe({
         next: (cliente) => {
-          this.clienteService.crearPrestamo(prestamoData).subscribe({
-            next: (pdfBase64) => {
-              console.log('Préstamo creado. Abriendo PDF...');
-              this.abrirPdfBlob(pdfBase64);
-              console.log(prestamoData);
-                console.log(pdfBase64);
-                this.rucForm.reset();
-              window.location.reload();
-              this.isLoading = false;
-            },
-            error: (error) => {
-              console.error('Error al crear préstamo:', error);
-              this.isLoading = false;
-            },
-          });
+          // Si el cliente se registra correctamente, se crea el préstamo
+          this.crearPrestamo(prestamoData);
         },
         error: (error) => {
           console.error('Error al crear el cliente: ', error);
   
-          // Si el cliente ya existe, proceder a crear el préstamo
+          // Si el cliente ya existe (Error 409), proceder a crear solo el préstamo
           if (error.status === 409) {
-            this.clienteService.crearPrestamo(this.rucForm.value).subscribe({
-              next: (pdfBase64) => {
-                console.log('Préstamo creado. Abriendo PDF...');
-                this.abrirPdfBlob(pdfBase64);
-                console.log(this.rucForm.value);
-                console.log(pdfBase64);
-                this.rucForm.reset();
-                window.location.reload();
-                this.isLoading = false;
-              },
-              error: (error) => {
-                console.error('Error al crear préstamo:', error);
-                this.isLoading = false;
-              },
-            });
+            console.log('Cliente ya existe, creando solo préstamo...');
+            this.crearPrestamo(prestamoData);
+          } else {
+            alert(`Error al crear cliente: ${error.message || 'Ocurrió un error inesperado.'}`);
+            this.isLoading = false;
           }
-        },
+        }
       });
     }
-  }
-  
-  abrirPdfBlob(pdfBlob: Blob): void {
-    const blobUrl = URL.createObjectURL(pdfBlob);
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.target = '_blank'; 
-    a.download = 'prestamo.pdf'; 
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(blobUrl);
   }
 
   cambiarTipoDocumento(tipo: string): void {
     this.tipoDocumento = tipo;
-    this.errorMessage = null; // Limpia los mensajes de error
+    this.errorMessage = null; 
     if (tipo === 'dni') {
-      this.rucForm.reset(); // Limpia el formulario RUC
+      this.rucForm.reset();
     } else if (tipo === 'ruc') {
-      this.dniForm.reset(); // Limpia el formulario DNI
+      this.dniForm.reset(); 
     }
   }
-  
-  base64ToBlob(base64: string, contentType: string): Blob {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length).fill(null).map((_, i) => byteCharacters.charCodeAt(i));
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: contentType });
-  }
+
 }

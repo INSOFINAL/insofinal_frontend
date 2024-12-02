@@ -14,13 +14,29 @@ import { RouterLink } from '@angular/router';
 export class HistorialPrestamoComponent {
   prestamos: any[] = [];
   nroDocumento!: string;
-
+  prestamos2: any[] = [];
   constructor(private prestamoService: ServiceService){}
 
   ngOnInit(): void {
-      
+    this.cargarPrestamos();
   }
 
+
+  cargarPrestamos(): void {
+    this.prestamoService.obtenerPrestamosOrdenados().subscribe(
+      (data) => {
+        this.prestamos2 = data;
+      },
+      (error) => {
+        console.error('Error al cargar los préstamos', error);
+      }
+    );
+  }
+
+  ajustarZonaHoraria(fechaUTC: string): string {
+    const fecha = new Date(fechaUTC);
+    return fecha.toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  }
 
   marcarComoPagado(pagoId: number) {
  
@@ -50,6 +66,21 @@ export class HistorialPrestamoComponent {
   }
 
 
+  imprimirPago(pago: any): void {
+    this.prestamoService.generarPDF(pago.id).subscribe(response => {
+      // Crear un enlace para descargar el archivo PDF
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `prestamo_pagado_${pago.id}.pdf`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error("Error al generar PDF", error);
+    });
+  }
+
   imprimirPrestamo(prestamoId: number): void {
     this.prestamoService.generarPdfPrestamo(prestamoId).subscribe({
       next: (pdfBlob) => {
@@ -78,8 +109,7 @@ export class HistorialPrestamoComponent {
 
   buscarPrestamos() {
     this.prestamoService.getPrestamosPorDni(this.nroDocumento).subscribe(data => {
-    
-      this.prestamos = data; 
+       this.prestamos = data; 
  
     }, error => {
       console.error('Error fetching prestamos', error); 

@@ -37,7 +37,7 @@
 
 <!-- Itera sobre los préstamos y muestra sus detalles -->
 <div *ngIf="prestamos.length > 0" class="prestamos-container">
-    <h3>Préstamos Encontrados</h3>
+    <h3>Préstamos próximos encontrados</h3>
     <div *ngFor="let prestamo of prestamos" class="prestamo-cuadro">
 
       <div *ngIf="prestamo.cliente.nroDocumento.length === 8">
@@ -51,7 +51,7 @@
         <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        
+        <p><strong>Estado:</strong> {{ prestamo.estado }}</p>
       </div>
 
       <div *ngIf="prestamo.cliente.nroDocumento.length === 11">
@@ -65,7 +65,7 @@
       <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
-        
+        <p><strong>Estado:</strong> {{ prestamo.estado }}</p>
       </div>
       
       <button (click)="imprimirPrestamo(prestamo.id)" title="Generar PDF">
@@ -76,12 +76,7 @@
         />
       </button>
       
-        <button 
-            *ngIf="todosPagosPendientes(prestamo)" 
-            (click)="cancelarPrestamo(prestamo.id)" 
-            class="btn btn-danger">
-            Cancelar Préstamo
-        </button>
+        
       <h4>Cronograma de Pagos</h4>
       <table class="table table-bordered">
         <thead>

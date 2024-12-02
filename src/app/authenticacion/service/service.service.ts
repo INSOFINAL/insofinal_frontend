@@ -13,6 +13,11 @@ export class ServiceService {
   private tokenKey = 'authToken';
   constructor(private Http: HttpClient, private router: Router) { }
 
+
+  obtenerPrestamosOrdenados(): Observable<Prestamo[]> {
+    return this.Http.get<Prestamo[]>(`${this.apiUrl}/prestamos/listar`);
+  }
+
   getPrestamoById(prestamoId: number): Observable<any> {
     return this.Http.get<any>(`${this.apiUrl}/${prestamoId}`);
   }
@@ -51,8 +56,12 @@ export class ServiceService {
   }
 
 
-  crearPrestamo(prestamoData: Prestamo): Observable<Blob> {
-    return this.Http.post<Blob>(`${this.apiUrl}/prestamos/crear`, prestamoData, { responseType: 'blob' as 'json'});
+  crearPrestamo(prestamoData: Prestamo): Observable<any> {
+    return this.Http.post<any>(`${this.apiUrl}/prestamos/crear`, prestamoData);
+  }
+
+  generarPDF(pagoId: number): Observable<any> {
+    return this.Http.get(`${this.apiUrl}/prestamos/generarPDF/${pagoId}`, { responseType: 'blob' });
   }
 
   eliminarPrestamo(id: number): Observable<void> {

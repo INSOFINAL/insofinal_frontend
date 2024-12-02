@@ -5,7 +5,90 @@
     
       <input class="input" [(ngModel)]="nroDocumento" (ngModelChange)="buscarPrestamos()" placeholder="Ingrese el Numero de Documento" />
     
-    
+      <div *ngIf="prestamos2.length > 0 && !nroDocumento" class="prestamos-container">
+        <h3>Préstamos generados</h3>
+        <div *ngFor="let prestamo of prestamos2" class="prestamo-cuadro">
+      
+          <div *ngIf="prestamo.cliente.nroDocumento.length === 8">
+            <h4>Detalles del Préstamo</h4>
+            <h3>Datos del Cliente</h3>
+            <p><strong>Nombres:</strong> {{ prestamo.cliente.nombre }}</p>
+            <p><strong>Apellido Paterno:</strong> {{ prestamo.cliente.apellidoPaterno }}</p>
+            <p><strong>Apellido Materno:</strong> {{ prestamo.cliente.apellidoMaterno }}</p>
+            <p><strong>DNI:</strong> {{ prestamo.cliente.nroDocumento }}</p>
+            <p><strong>Fecha Creación:</strong> {{ ajustarZonaHoraria(prestamo.fechaCreacion) }}</p>
+            <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
+            <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
+            <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
+            <p><strong>Estado:</strong> {{ prestamo.estado }}</p>
+          </div>
+      
+          <div *ngIf="prestamo.cliente.nroDocumento.length === 11">
+            <h3>Datos del Cliente</h3>
+          <p><strong>Nombres:</strong> {{ prestamo.cliente.nombre }}</p>
+          <p><strong>DNI:</strong> {{ prestamo.cliente.nroDocumento }}</p>
+          <p><strong>Departamento:</strong> {{ prestamo.cliente.departamento }}</p>
+          <p><strong>Distrito:</strong> {{ prestamo.cliente.distrito }}</p>
+          <p><strong>Provincia:</strong> {{ prestamo.cliente.provincia }}</p>
+          <p><strong>Direccion:</strong> {{ prestamo.cliente.direccion }}</p>
+          <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
+            <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
+            <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
+            <p><strong>Estado:</strong> {{ prestamo.estado }}</p>
+          </div>
+          
+          <button (click)="imprimirPrestamo(prestamo.id)" title="Generar PDF">
+            <img
+              src="printer.png"
+              alt="Imprimir"
+              style="width: 24px; height: 24px; cursor: pointer;"
+            />
+          </button>
+          
+          <button 
+          *ngIf="todosPagosPendientes(prestamo)" 
+          (click)="cancelarPrestamo(prestamo.id)" 
+          class="btn btn-danger">
+          Cancelar Préstamo
+      </button>
+          <h4>Cronograma de Pagos</h4>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Fecha de Pago</th>
+                <th>Monto de la Cuota</th>
+                <th>Pago Intereses</th>
+                <th>Amortización</th>
+                <th>Saldo Restante</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pago of prestamo.cronogramaPagos; let i = index">
+                <td>{{ pago.fechaPago | date:'dd/MM/yyyy' }}</td>
+                <td>{{ pago.montoCuota | currency:'PEN':'symbol':'1.2-2' }}</td>
+                <td>{{ pago.pagoIntereses | currency:'PEN':'symbol':'1.2-2'}}</td>
+                <td>{{ pago.amortizacion | currency:'PEN':'symbol':'1.2-2'}}</td>
+                <td>{{ pago.saldoRestante | currency:'PEN':'symbol':'1.2-2'}}</td>
+                <td [ngClass]="{'deuda': pago.estado === 'Deuda', 'pagado': pago.estado === 'Pagado', 'pendiente': pago.estado === 'Pendiente'}">
+                  {{ pago.estado }}
+                </td>
+                <td>
+                  <!-- Mostrar el botón solo para la primera cuota pendiente -->
+                  <button (click)="marcarComoPagado(pago.id)" 
+                          *ngIf="pago.estado === 'Pendiente' && esPrimerPagoPendiente(prestamo.cronogramaPagos, i)">
+                    Marcar como Pagado
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
     <div *ngIf="prestamos.length > 0 && nroDocumento.length === 8">
       <h3>Datos del Cliente</h3>
       <p><strong>Nombres:</strong> {{ prestamos[0].cliente.nombre }}</p>
@@ -36,6 +119,7 @@
         <p><strong>Monto:</strong> {{ prestamo.monto | currency:'PEN':'symbol':'1.2-2' }}</p>
         <p><strong>Interés:</strong> {{ prestamo.interes }}%</p>
         <p><strong>Plazo:</strong> {{ prestamo.plazo }} meses</p>
+        <p><strong>Estado:</strong> {{ prestamo.estado }}</p>
         <button (click)="imprimirPrestamo(prestamo.id)" title="Generar PDF">
           <img
             src="printer.png"
@@ -78,6 +162,13 @@
                 <button (click)="marcarComoPagado(pago.id)" 
                         *ngIf="pago.estado === 'Pendiente' && esPrimerPagoPendiente(prestamo.cronogramaPagos, i)">
                   Marcar como Pagado
+                </button>
+              </td>
+
+              <td>
+                <!-- Mostrar el botón de impresora solo si el pago está marcado como 'Pagado' -->
+                <button *ngIf="pago.estado === 'Pagado'" (click)="imprimirPago(pago)">
+                  <img src="printer.png" alt="Imprimir" style="width: 24px; height: 24px; cursor: pointer;" />
                 </button>
               </td>
             </tr>
