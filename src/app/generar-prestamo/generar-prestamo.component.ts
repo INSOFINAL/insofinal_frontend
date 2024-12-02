@@ -230,7 +230,6 @@ export class GenerarPrestamoComponent {
     a.href = blobUrl;
     a.target = '_blank'; 
     a.download = 'prestamo.pdf'; 
-    window.open(blobUrl, '_blank');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
