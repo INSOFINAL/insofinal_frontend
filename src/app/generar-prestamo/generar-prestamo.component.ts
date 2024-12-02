@@ -32,7 +32,7 @@ export class GenerarPrestamoComponent {
     this.dniForm = this.fb.group({
       dni: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
       nroDocumento: ['', [Validators.required]],
-      nombres: ['', [Validators.required]],
+      nombre: ['', [Validators.required]],
       apellidoPaterno: ['', [Validators.required]],
       apellidoMaterno: ['', [Validators.required]],
       monto: ['', [Validators.required, Validators.min(1), Validators.max(5000)]],
@@ -90,7 +90,7 @@ export class GenerarPrestamoComponent {
           if (data) {
             this.dniForm.patchValue({
               nroDocumento: data.numeroDocumento,
-              nombres: data.nombres,
+              nombre: data.nombres,
               apellidoPaterno: data.apellidoPaterno,
               apellidoMaterno: data.apellidoMaterno
             });
