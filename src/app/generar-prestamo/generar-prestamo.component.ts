@@ -228,12 +228,13 @@ export class GenerarPrestamoComponent {
     const blobUrl = URL.createObjectURL(pdfBlob);
     const a = document.createElement('a');
     a.href = blobUrl;
-    a.target = '_blank'; // Abrir en una nueva pestaña
-    a.download = 'prestamo.pdf'; // Nombre del archivo para descargar
+    a.target = '_blank'; 
+    a.download = 'prestamo.pdf'; 
+    window.open(blobUrl, '_blank');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(blobUrl); // Liberar memoria
+    URL.revokeObjectURL(blobUrl);
   }
   
   base64ToBlob(base64: string, contentType: string): Blob {
