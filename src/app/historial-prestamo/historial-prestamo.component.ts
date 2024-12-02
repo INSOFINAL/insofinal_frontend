@@ -110,7 +110,7 @@ export class HistorialPrestamoComponent {
   buscarPrestamos() {
     this.prestamoService.getPrestamosPorDni(this.nroDocumento).subscribe(data => {
        this.prestamos = data; 
- 
+      
     }, error => {
       console.error('Error fetching prestamos', error); 
     });

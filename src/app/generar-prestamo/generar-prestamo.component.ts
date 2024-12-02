@@ -168,8 +168,6 @@ export class GenerarPrestamoComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        // Mostrar error al crear préstamo
-        console.log(error)
         alert(`Error al crear préstamo: ${error.error.mensaje || 'Ocurrió un error inesperado.'}`);
         this.isLoading = false;
       }
