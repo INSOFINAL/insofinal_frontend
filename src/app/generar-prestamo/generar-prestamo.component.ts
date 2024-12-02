@@ -143,6 +143,8 @@ export class GenerarPrestamoComponent {
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              console.log(prestamoData);
+                console.log(pdfBase64);
               window.location.reload();
               this.isLoading = false;
             },
@@ -160,6 +162,8 @@ export class GenerarPrestamoComponent {
             this.clienteService.crearPrestamo(this.dniForm.value).subscribe({
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
+                console.log(this.dniForm.value);
+                console.log(pdfBase64);
                 this.abrirPdfBlob(pdfBase64);
                 window.location.reload();
                 this.isLoading = false;
@@ -190,6 +194,8 @@ export class GenerarPrestamoComponent {
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              console.log(prestamoData);
+                console.log(pdfBase64);
               window.location.reload();
               this.isLoading = false;
             },
@@ -208,6 +214,8 @@ export class GenerarPrestamoComponent {
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
                 this.abrirPdfBlob(pdfBase64);
+                console.log(this.rucForm.value);
+                console.log(pdfBase64);
                 window.location.reload();
                 this.isLoading = false;
               },
