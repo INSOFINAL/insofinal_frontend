@@ -81,6 +81,13 @@
                     Marcar como Pagado
                   </button>
                 </td>
+
+                <td>
+                  <!-- Mostrar el botón de impresora solo si el pago está marcado como 'Pagado' -->
+                  <button *ngIf="pago.estado === 'Pagado'" (click)="imprimirPago(pago)">
+                    <img src="printer.png" alt="Imprimir" style="width: 24px; height: 24px; cursor: pointer;" />
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
