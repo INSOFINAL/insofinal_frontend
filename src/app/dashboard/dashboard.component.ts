@@ -20,9 +20,20 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-   
+    this.actualizarDeudas();
     this.getinfo();
     this.cargarPrestamosPendientes();
+  }
+
+  actualizarDeudas(): void {
+    this.Service.actualizarDeudas().subscribe({
+      next: () => {
+        console.log('Deudas actualizadas exitosamente');
+      },
+      error: (err) => {
+        console.error('Error al actualizar las deudas', err);
+      }
+    });
   }
 
 

@@ -4,16 +4,11 @@
     <h1 class="tittle">Historial de Préstamos</h1>
     
       <input class="input" [(ngModel)]="nroDocumento" (ngModelChange)="buscarPrestamos()" placeholder="Ingrese el Numero de Documento" />
-      
+    
       <div *ngIf="prestamos2.length > 0 && !nroDocumento" class="prestamos-container">
-        <select class="input" [(ngModel)]="estadoSeleccionado" (change)="filtrarPrestamos()">
-          <option value="">Todos</option>
-          <option value="Pendiente">Deudas con cuotas pendientes</option>
-          <option value="Deuda Judicial">Deuda en estado judicial</option>
-          <option value="Pagado">Deudas pagadas</option>
-        </select>
         <h3>Préstamos generados</h3>
         <div *ngFor="let prestamo of prestamos2" class="prestamo-cuadro">
+      
           <div *ngIf="prestamo.cliente.nroDocumento.length === 8">
             <h4>Detalles del Préstamo</h4>
             <h3>Datos del Cliente</h3>
@@ -51,7 +46,7 @@
           </button>
           
           <button 
-          *ngIf="todosPagosPendientes(prestamo) && prestamo.estado !== 'Deuda Judicial'" 
+          *ngIf="todosPagosPendientes(prestamo)" 
           (click)="cancelarPrestamo(prestamo.id)" 
           class="btn btn-danger">
           Cancelar Préstamo

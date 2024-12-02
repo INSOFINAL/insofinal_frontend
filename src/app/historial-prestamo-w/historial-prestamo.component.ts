@@ -15,7 +15,6 @@ export class HistorialPrestamoComponent {
   prestamos: any[] = [];
   nroDocumento!: string;
   prestamos2: any[] = [];
-  estadoSeleccionado: string = '';
   constructor(private prestamoService: ServiceService){}
 
   ngOnInit(): void {
@@ -32,17 +31,6 @@ export class HistorialPrestamoComponent {
         console.error('Error al cargar los préstamos', error);
       }
     );
-  }
-
-
-  filtrarPrestamos(): void {
-    if (this.estadoSeleccionado) {
-      this.prestamoService.filtrarPrestamos(this.estadoSeleccionado).subscribe(data => {
-        this.prestamos2 = data;
-      });
-    } else {
-      this.cargarPrestamos(); // Si no hay filtro, carga todos los préstamos
-    }
   }
 
   ajustarZonaHoraria(fechaUTC: string): string {

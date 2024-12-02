@@ -13,7 +13,13 @@ export class ServiceService {
   private tokenKey = 'authToken';
   constructor(private Http: HttpClient, private router: Router) { }
 
-
+  filtrarPrestamos(estado: string): Observable<any[]> {
+    return this.Http.get<any[]>(`${this.apiUrl}/prestamos/filtrar?estado=${estado}`);
+  }
+  
+  actualizarDeudas(): Observable<any> {
+    return this.Http.post(`${this.apiUrl}/prestamos/actualizar-deudas`, null);
+  }
   obtenerPrestamosOrdenados(): Observable<Prestamo[]> {
     return this.Http.get<Prestamo[]>(`${this.apiUrl}/prestamos/listar`);
   }
