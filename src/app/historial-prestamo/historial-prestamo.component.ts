@@ -42,7 +42,8 @@ export class HistorialPrestamoComponent {
  
     this.prestamoService.marcarPagoComoPagado(pagoId).subscribe(response => {
     
-      this.buscarPrestamos(); // Actualizar la lista de préstamos
+      this.buscarPrestamos(); 
+      this.cargarPrestamos(); // Actualizar la lista de préstamos
     }, error => {
       console.error('Error al marcar pago como pagado', error);
     });
