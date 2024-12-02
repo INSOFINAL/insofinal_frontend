@@ -221,9 +221,7 @@ export class GenerarPrestamoComponent {
       });
     }
   }
-  cambiarTipoDocumento(tipo: string): void {
-    this.tipoDocumento = tipo; // Actualiza el tipo de documento seleccionado
-  }
+  
   abrirPdfBlob(pdfBlob: Blob): void {
     const blobUrl = URL.createObjectURL(pdfBlob);
     const a = document.createElement('a');
@@ -234,6 +232,10 @@ export class GenerarPrestamoComponent {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(blobUrl);
+  }
+
+  cambiarTipoDocumento(tipo: string): void {
+    this.tipoDocumento = tipo; // Actualiza el tipo de documento seleccionado
   }
   
   base64ToBlob(base64: string, contentType: string): Blob {

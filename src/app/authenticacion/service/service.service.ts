@@ -52,7 +52,7 @@ export class ServiceService {
 
 
   crearPrestamo(prestamoData: Prestamo): Observable<Blob> {
-    return this.Http.post(`${this.apiUrl}/prestamos/crear`, prestamoData, { responseType: 'blob' });
+    return this.Http.post<Blob>(`${this.apiUrl}/prestamos/crear`, prestamoData, { responseType: 'blob' as 'json'});
   }
 
   eliminarPrestamo(id: number): Observable<void> {
