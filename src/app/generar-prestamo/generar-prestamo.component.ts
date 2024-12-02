@@ -90,7 +90,7 @@ export class GenerarPrestamoComponent {
           if (data) {
             this.dniForm.patchValue({
               nroDocumento: data.numeroDocumento,
-              nombre: data.nombres,
+              nombres: data.nombres,
               apellidoPaterno: data.apellidoPaterno,
               apellidoMaterno: data.apellidoMaterno
             });
