@@ -145,6 +145,7 @@ export class GenerarPrestamoComponent {
               this.abrirPdfBlob(pdfBase64);
               console.log(prestamoData);
                 console.log(pdfBase64);
+                this.dniForm.reset();
               window.location.reload();
               this.isLoading = false;
             },
@@ -164,6 +165,7 @@ export class GenerarPrestamoComponent {
                 console.log('Préstamo creado. Abriendo PDF...');
                 console.log(this.dniForm.value);
                 console.log(pdfBase64);
+                this.dniForm.reset();
                 this.abrirPdfBlob(pdfBase64);
                 window.location.reload();
                 this.isLoading = false;
@@ -196,6 +198,7 @@ export class GenerarPrestamoComponent {
               this.abrirPdfBlob(pdfBase64);
               console.log(prestamoData);
                 console.log(pdfBase64);
+                this.rucForm.reset();
               window.location.reload();
               this.isLoading = false;
             },
@@ -216,6 +219,7 @@ export class GenerarPrestamoComponent {
                 this.abrirPdfBlob(pdfBase64);
                 console.log(this.rucForm.value);
                 console.log(pdfBase64);
+                this.rucForm.reset();
                 window.location.reload();
                 this.isLoading = false;
               },
@@ -243,7 +247,13 @@ export class GenerarPrestamoComponent {
   }
 
   cambiarTipoDocumento(tipo: string): void {
-    this.tipoDocumento = tipo; // Actualiza el tipo de documento seleccionado
+    this.tipoDocumento = tipo;
+    this.errorMessage = null; // Limpia los mensajes de error
+    if (tipo === 'dni') {
+      this.rucForm.reset(); // Limpia el formulario RUC
+    } else if (tipo === 'ruc') {
+      this.dniForm.reset(); // Limpia el formulario DNI
+    }
   }
   
   base64ToBlob(base64: string, contentType: string): Blob {
