@@ -143,6 +143,7 @@ export class GenerarPrestamoComponent {
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              window.location.reload();
               this.isLoading = false;
             },
             error: (error) => {
@@ -160,6 +161,7 @@ export class GenerarPrestamoComponent {
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
                 this.abrirPdfBlob(pdfBase64);
+                window.location.reload();
                 this.isLoading = false;
               },
               error: (error) => {
@@ -188,6 +190,7 @@ export class GenerarPrestamoComponent {
             next: (pdfBase64) => {
               console.log('Préstamo creado. Abriendo PDF...');
               this.abrirPdfBlob(pdfBase64);
+              window.location.reload();
               this.isLoading = false;
             },
             error: (error) => {
@@ -205,6 +208,7 @@ export class GenerarPrestamoComponent {
               next: (pdfBase64) => {
                 console.log('Préstamo creado. Abriendo PDF...');
                 this.abrirPdfBlob(pdfBase64);
+                window.location.reload();
                 this.isLoading = false;
               },
               error: (error) => {
